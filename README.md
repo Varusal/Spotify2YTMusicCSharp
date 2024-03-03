@@ -1,2 +1,2 @@
 # Spotify2YTMusicCSharp
-Move Spotify Playlists to Youtube Music.
+Move Spotify Playlists to Youtube Music
