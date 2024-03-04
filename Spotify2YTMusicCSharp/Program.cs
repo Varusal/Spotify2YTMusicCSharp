@@ -1,10 +1,54 @@
 ﻿using SpotifyAPI.Web;
 
 List<string> tracksList = new List<string>();
+string filePath = string.Empty;
+string fileExtension = string.Empty;
+bool fileInputCheck = false;
 
-string filePath = @"C:\Temp\tracks.txt";
+do
+{
+    fileInputCheck = false;
+    Console.Write("Enter path for list of exported tracks (*.txt): ");
+    filePath = Console.ReadLine();
 
-string clientID = "e6a7a5cb1f5542c984f288b3684407e4";
+    if (filePath != string.Empty)
+    {
+        fileExtension = filePath.Substring(filePath.Length - 4);
+
+        if (fileExtension != ".txt")
+        {
+            fileInputCheck = true;
+            Console.Clear();
+            Console.WriteLine("ERROR! Please enter a filepath with *.txt file extension!");
+        }
+        else if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+        {
+            Console.Clear();
+            Console.WriteLine("Entered file path does not exist!");
+            Console.Write("Create directory? (y/N): ");
+            if (Console.ReadLine().ToLower() != "y")
+            {
+                Console.Clear();
+                Console.WriteLine("Directory was NOT created!");
+                fileInputCheck = true;
+            }
+            else
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            }
+        }
+    }
+    else
+    {
+        Console.Clear();
+        Console.WriteLine("ERROR! Do not enter nothing!");
+        fileInputCheck = true;
+    }
+} while (fileInputCheck);
+
+Console.Write("Enter client ID: ");
+string clientID = Console.ReadLine();
+
 Console.Write("Enter client secret: ");
 string clientSecret = Console.ReadLine();
 
@@ -14,7 +58,10 @@ var response = await new OAuthClient(config).RequestToken(request);
 
 var spotiClient = new SpotifyClient(config.WithToken(response.AccessToken));
 
-var playlist = await spotiClient.Playlists.GetItems("27zKKPzY1TIJOVvwaORqwY");
+Console.Write("Enter playlist ID: ");
+string playlistID = Console.ReadLine();
+
+var playlist = await spotiClient.Playlists.GetItems(playlistID);
 
 await foreach(var item in spotiClient.Paginate(playlist))
 {
