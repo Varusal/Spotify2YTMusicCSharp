@@ -1,8 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Runtime.CompilerServices;
-using Google.Apis.Auth.OAuth2;
+﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
